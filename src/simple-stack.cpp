@@ -4,13 +4,18 @@ class Stack;
 class Node
 {
 private:
+
     // Value stored in the node
     int _value;
+
     // Pointer to the next node 
     Node *_next;
+
 public:
-    // Returns the value stored in the node
+
+    // Returns the value of the node
     const int value(){ return this->_value; }
+    
     // Returns a pointer to the next node
     const Node* next(){ return this->_next; }
 
