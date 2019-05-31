@@ -1,4 +1,7 @@
 #include <stddef.h>
+#include <stdexcept>
+
+using namespace std;
 
 class Node;
 class Stack;
@@ -17,7 +20,7 @@ public:
 
     // Returns the value of the node
     const int value(){ return this->_value; }
-    
+
     // Returns a pointer to the next node
     const Node* next(){ return this->_next; }
 
@@ -56,19 +59,27 @@ public:
     const bool empty(){ return this->_size == 0; }
 
     // Returns the value of the node at the top of the stack
-    const int top(){ return this->_top->value(); }
+    const int top()
+    {
+        if(this->empty()) throw underflow_error("Stack is empty!");
+        return this->_top->value();
+    }
 
     // Adds a node at the top of the stack
     void push(int value)
     {
-        Node *new_node = new Node(value, this->_top);
-        this->_top = new_node;
+        Node *new_node = nullptr;
+        try { new_node = new Node(value, this->_top); }
+        catch(bad_alloc){ throw; }
         this->_size++;
+        if(this->_size == 0) throw overflow_error("Stack is full!");
+        this->_top = new_node;
     }
     
     // Removes a node from the top of the stack and returns its value
     int pop()
     {
+        if(this->empty()) throw underflow_error("Stack is empty!");
         Node *old_node = this->_top;
         this->_top = (Node *) old_node->next();
         int value = old_node->value();
