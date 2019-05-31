@@ -39,6 +39,14 @@ private:
     // Integer representing the size of the stack
     size_t _size = 0;
 
+    // Recursively deletes all nodes, starting from to_delete
+    void delete_all(Node *to_delete)
+    {
+        if(to_delete == nullptr) return;
+        delete_all((Node *) to_delete->next());
+        delete to_delete;
+    }
+
 public:
 
     // Returns the current size of the stack
@@ -70,7 +78,7 @@ public:
     }
 
     Stack();
-    ~Stack();
+    ~Stack(){ delete_all(this->_top); }
 };
 
 int main(){}
